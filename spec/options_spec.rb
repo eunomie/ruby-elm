@@ -77,7 +77,9 @@ describe Elm::Options do
     end
 
     it 'should not accept other symbols' do
-      expect { sut.report = :bla }.to raise_error
+      expect { sut.report = :bla }.to raise_error(
+        Elm::BadReportFormatError,
+        '\'bla\' is not a valid report format')
     end
 
     it 'should not accept other than symbol' do
