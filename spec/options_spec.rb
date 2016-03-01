@@ -1,4 +1,4 @@
-require 'elm/options'
+require 'elm'
 
 RSpec::Expectations.configuration.warn_about_potential_false_positives = false
 

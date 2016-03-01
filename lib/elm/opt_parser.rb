@@ -1,6 +1,6 @@
 require 'contracts'
 require 'optparse'
-require 'options'
+require 'elm/options'
 
 module Elm
   # Parse command line options
