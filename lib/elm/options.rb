@@ -32,7 +32,7 @@ module Elm
 
     Contract Symbol => Symbol
     def report=(value)
-      raise Error if REPORTS.index?(value).nil?
+      raise Error if REPORTS.index(value).nil?
       @report = value
     end
 
