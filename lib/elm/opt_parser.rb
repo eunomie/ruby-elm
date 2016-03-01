@@ -10,7 +10,7 @@ module Elm
 
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
-    Contract [String] => Options
+    Contract ArrayOf[String] => Options
     def self.parse(args)
       options = Options.new
 
