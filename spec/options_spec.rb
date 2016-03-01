@@ -25,6 +25,10 @@ describe Elm::Options do
     it 'should have nil docs' do
       expect(sut.docs).to be_nil
     end
+
+    it 'should export nothing' do
+      expect(sut.to_a).to eq []
+    end
   end
 
   context '#output=' do
@@ -40,6 +44,12 @@ describe Elm::Options do
       expect { sut.output = true }.to raise_error
       expect { sut.output = nil }.to raise_error
       expect { sut.output = {} }.to raise_error
+    end
+
+    it 'should export' do
+      output = 'file.js'
+      sut.output = output
+      expect(sut.to_a).to eq ['--output', output]
     end
   end
 
@@ -60,6 +70,16 @@ describe Elm::Options do
       expect { sut.yes = 'true' }.to raise_error
       expect { sut.yes = nil }.to raise_error
       expect { sut.yes = {} }.to raise_error
+    end
+
+    it 'should export true' do
+      sut.yes = true
+      expect(sut.to_a).to eq ['--yes']
+    end
+
+    it 'should not export false' do
+      sut.yes = false
+      expect(sut.to_a).to eq []
     end
   end
 
@@ -89,6 +109,16 @@ describe Elm::Options do
       expect { sut.report = nil }.to raise_error
       expect { sut.report = {} }.to raise_error
     end
+
+    it 'should export json' do
+      sut.report = :json
+      expect(sut.to_a).to eq ['--report', 'json']
+    end
+
+    it 'should not export normal' do
+      sut.report = :normal
+      expect(sut.to_a).to eq []
+    end
   end
 
   context '#warn=' do
@@ -109,6 +139,16 @@ describe Elm::Options do
       expect { sut.warn = nil }.to raise_error
       expect { sut.warn = {} }.to raise_error
     end
+
+    it 'should export true' do
+      sut.warn = true
+      expect(sut.to_a).to eq ['--warn']
+    end
+
+    it 'should not export false' do
+      sut.warn = false
+      expect(sut.to_a).to eq []
+    end
   end
 
   context '#docs=' do
@@ -124,6 +164,12 @@ describe Elm::Options do
       expect { sut.docs = true }.to raise_error
       expect { sut.docs = nil }.to raise_error
       expect { sut.docs = {} }.to raise_error
+    end
+
+    it 'should export docs' do
+      docs = 'file.js'
+      sut.docs = docs
+      expect(sut.to_a).to eq ['--docs', docs]
     end
   end
 end

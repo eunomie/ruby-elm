@@ -52,5 +52,43 @@ module Elm
       @docs = value
     end
     # rubocop:enable Style/TrivialAccessors
+
+    Contract None => ArrayOf[String]
+    def to_a
+      res = []
+      push_output res
+      push_yes res
+      push_report res
+      push_warn res
+      push_docs res
+      res
+    end
+
+    private
+
+    Contract ArrayOf[String] => Maybe[ArrayOf[String]]
+    def push_output(res)
+      res << '--output' && res << @output unless @output == 'index.html'
+    end
+
+    Contract ArrayOf[String] => Maybe[ArrayOf[String]]
+    def push_yes(res)
+      res << '--yes' if @yes
+    end
+
+    Contract ArrayOf[String] => Maybe[ArrayOf[String]]
+    def push_report(res)
+      res << '--report' && res << @report.to_s unless @report == :normal
+    end
+
+    Contract ArrayOf[String] => Maybe[ArrayOf[String]]
+    def push_warn(res)
+      res << '--warn' if @warn
+    end
+
+    Contract ArrayOf[String] => Maybe[ArrayOf[String]]
+    def push_docs(res)
+      res << '--docs' && res << @docs unless @docs.nil?
+    end
   end
 end
