@@ -21,4 +21,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'guard-cucumber', '~> 2.0'
   s.add_development_dependency 'rake', '~> 10.5'
   s.add_development_dependency 'rubocop', '~> 0.37'
+  s.add_dependency 'contracts', '~> 0.13.0'
 end
