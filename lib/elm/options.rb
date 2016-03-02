@@ -11,10 +11,10 @@ module Elm
     include Contracts::Builtin
 
     Contract KeywordArgs[output: Optional[String],
-                         yes: Optional[Bool],
+                         yes:    Optional[Bool],
                          report: Optional[Symbol],
-                         warn: Optional[Bool],
-                         docs: Optional[Maybe[String]]] => Options
+                         warn:   Optional[Bool],
+                         docs:   Optional[Maybe[String]]] => Options
     def self.with(output: 'index.html', yes: false, report: :normal,
                   warn: false, docs: nil)
       opts = Options.new
