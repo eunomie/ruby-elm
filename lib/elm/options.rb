@@ -10,16 +10,35 @@ module Elm
     include Contracts::Core
     include Contracts::Builtin
 
+    Contract KeywordArgs[output: Optional[String],
+                         yes: Optional[Bool],
+                         report: Optional[Symbol],
+                         warn: Optional[Bool],
+                         docs: Optional[Maybe[String]]] => Options
+    def self.with(output: 'index.html', yes: false, report: :normal,
+                  warn: false, docs: nil)
+      opts = Options.new
+      opts.output = output
+      opts.yes = yes
+      opts.report = report
+      opts.warn = warn
+      opts.docs = docs unless docs.nil?
+      opts
+    end
+
     FORMATS = [:normal, :json].freeze
 
     attr_reader :output, :yes, :report, :warn, :docs
 
+    Contract None => Options
     def initialize
       @output = 'index.html'
       @yes = false
       @report = :normal
       @warn = false
       @docs = nil
+
+      self
     end
 
     # rubocop:disable Style/TrivialAccessors

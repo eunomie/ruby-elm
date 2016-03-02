@@ -172,4 +172,40 @@ describe Elm::Options do
       expect(sut.to_a).to eq ['--docs', docs]
     end
   end
+
+  context '##with' do
+    it 'should do nothing by default' do
+      opts = Elm::Options.with
+      expect(opts.output).to eq sut.output
+      expect(opts.yes).to eq sut.yes
+      expect(opts.report).to eq sut.report
+      expect(opts.warn).to eq sut.warn
+      expect(opts.docs).to eq sut.docs
+    end
+
+    it 'should set output' do
+      opts = Elm::Options.with output: 'main.js'
+      expect(opts.output).to eq 'main.js'
+    end
+
+    it 'should set yes' do
+      opts = Elm::Options.with yes: true
+      expect(opts.yes).to be true
+    end
+
+    it 'should set report' do
+      opts = Elm::Options.with report: :json
+      expect(opts.report).to eq :json
+    end
+
+    it 'should set warn' do
+      opts = Elm::Options.with warn: true
+      expect(opts.warn).to be true
+    end
+
+    it 'should set docs' do
+      opts = Elm::Options.with docs: 'file.js'
+      expect(opts.docs).to eq 'file.js'
+    end
+  end
 end
