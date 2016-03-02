@@ -53,6 +53,16 @@ describe Elm::Options do
     end
   end
 
+  context '#with_output' do
+    it 'should not modify default options' do
+      default_output = sut.output
+      output = 'file.js'
+      opts = sut.with_output output
+      expect(sut.output).to eq default_output
+      expect(opts.output).to eq output
+    end
+  end
+
   context '#yes=' do
     it 'should accept true' do
       sut.yes = true
@@ -80,6 +90,14 @@ describe Elm::Options do
     it 'should not export false' do
       sut.yes = false
       expect(sut.to_a).to eq []
+    end
+  end
+
+  context '#with_yes' do
+    it 'should not modify default options' do
+      opts = sut.with_yes
+      expect(sut.yes).to be false
+      expect(opts.yes).to be true
     end
   end
 
@@ -121,6 +139,16 @@ describe Elm::Options do
     end
   end
 
+  context '#with_report' do
+    it 'should not modify default options' do
+      default_report = sut.report
+      report = :json
+      opts = sut.with_report report
+      expect(sut.report).to be default_report
+      expect(opts.report).to be report
+    end
+  end
+
   context '#warn=' do
     it 'should accept true' do
       sut.warn = true
@@ -151,6 +179,14 @@ describe Elm::Options do
     end
   end
 
+  context '#with_warn' do
+    it 'should not modify default options' do
+      opts = sut.with_warn
+      expect(sut.warn).to be false
+      expect(opts.warn).to be true
+    end
+  end
+
   context '#docs=' do
     it 'should accept a string' do
       docs = 'file.js'
@@ -173,7 +209,17 @@ describe Elm::Options do
     end
   end
 
-  context '##with' do
+  context '#with_docs' do
+    it 'should not modify default options' do
+      default_docs = sut.docs
+      docs = 'docs.js'
+      opts = sut.with_docs docs
+      expect(sut.docs).to be default_docs
+      expect(opts.docs).to be docs
+    end
+  end
+
+  context '::with' do
     it 'should do nothing by default' do
       opts = Elm::Options.with
       expect(opts.output).to eq sut.output

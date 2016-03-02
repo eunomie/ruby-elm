@@ -1,6 +1,7 @@
 require 'contracts'
 
 module Elm
+  # rubocop:disable Metrics/ClassLength
   # Error raised when trying to set a bad report format
   class BadReportFormatError < RuntimeError
   end
@@ -24,6 +25,15 @@ module Elm
       opts.warn = warn
       opts.docs = docs unless docs.nil?
       opts
+    end
+
+    Contract Options => Options
+    def self.clone(opts)
+      Options.with(output: opts.output,
+                   yes: opts.yes,
+                   report: opts.report,
+                   warn: opts.warn,
+                   docs: opts.docs)
     end
 
     FORMATS = [:normal, :json].freeze
@@ -81,6 +91,41 @@ module Elm
       push_warn res
       push_docs res
       res
+    end
+
+    Contract String => Options
+    def with_output(output)
+      opts = Options.clone self
+      opts.output = output
+      opts
+    end
+
+    Contract None => Options
+    def with_yes
+      opts = Options.clone self
+      opts.yes = true
+      opts
+    end
+
+    Contract Symbol => Options
+    def with_report(report)
+      opts = Options.clone self
+      opts.report = report
+      opts
+    end
+
+    Contract None => Options
+    def with_warn
+      opts = Options.clone self
+      opts.warn = true
+      opts
+    end
+
+    Contract String => Options
+    def with_docs(docs)
+      opts = Options.clone self
+      opts.docs = docs
+      opts
     end
 
     private
