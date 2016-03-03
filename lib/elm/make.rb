@@ -1,9 +1,13 @@
 require 'contracts'
-require 'elm/opt_parser'
-require 'open3'
 require 'tempfile'
+require 'elm/opt_parser'
+require 'elm/runnable'
 
 module Elm
+  # Compile error
+  class CompilerError < RuntimeError
+  end
+
   # elm-make wrapper
   class Make
     include Contracts::Core
@@ -51,11 +55,9 @@ module Elm
     # rubocop:disable Lint/DuplicateMethods
     Contract Options => String
     def compile(options)
-      cmd = ['elm-make'] + @files + options.to_a
-      Open3.popen3(*cmd) do |_i, _o, _e, t|
-        status = t.value
-        puts cmd.join(' ') unless status.success?
-      end
+      make = Elm::Runnable.new 'elm-make'
+      status = make.run(@files + options.to_a)
+      raise CompilerError unless status
       options.output
     end
     # rubocop:enable Lint/DuplicateMethods
