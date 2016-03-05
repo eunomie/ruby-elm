@@ -15,6 +15,8 @@ module Elm
     Contract String => Runnable
     def initialize(command)
       @command = command
+      @out = ''
+      @err = ''
 
       unless exists?
         raise ExecutableNotFoundError,
@@ -34,7 +36,9 @@ module Elm
     def run(options)
       status = false
       cmd = [@command] + options
-      Open3.popen3(*cmd) do |_i, _o, _e, t|
+      Open3.popen3(*cmd) do |_i, o, e, t|
+        @out = o.gets
+        @err = e.gets
         status = t.value
       end
       status.success?
