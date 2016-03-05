@@ -7,16 +7,47 @@ module Elm
   class ExecutableNotFoundError < RuntimeError
   end
 
+  # Successful status
+  class RunSuccess
+    include Contracts::Core
+    include Contracts::Builtin
+
+    attr_reader :stdout
+
+    Contract String => RunSuccess
+    def initialize(stdout)
+      @stdout = stdout
+
+      self
+    end
+  end
+
+  # Fail status
+  class RunError
+    include Contracts::Core
+    include Contracts::Builtin
+
+    attr_reader :stdout, :stderr
+
+    Contract String, KeywordArgs[with_error: Optional[String]] => RunError
+    def initialize(stdout, with_error: '')
+      @stdout = stdout
+      @stderr = with_error
+
+      self
+    end
+  end
+
   # Run command
   class Runnable
     include Contracts::Core
     include Contracts::Builtin
 
+    RunStatus = Or[RunSuccess, RunError]
+
     Contract String => Runnable
     def initialize(command)
       @command = command
-      @out = ''
-      @err = ''
 
       unless exists?
         raise ExecutableNotFoundError,
@@ -26,22 +57,24 @@ module Elm
       self
     end
 
-    Contract None => Bool
+    Contract None => RunStatus
     def run
       run []
     end
 
     # rubocop:disable Lint/DuplicateMethods
-    Contract ArrayOf[String] => Bool
+    Contract ArrayOf[String] => RunStatus
     def run(options)
-      status = false
       cmd = [@command] + options
       Open3.popen3(*cmd) do |_i, o, e, t|
-        @out = o.gets
-        @err = e.gets
-        status = t.value
+        @out = o.gets || ''
+        @err = e.gets || ''
+        if t.value.success?
+          RunSuccess.new @out
+        else
+          RunError.new @out, with_error: @err
+        end
       end
-      status.success?
     end
     # rubocop:enable Lint/DuplicateMethods
 

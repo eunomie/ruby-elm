@@ -1,3 +1,4 @@
+require 'contracts'
 require 'elm/runnable'
 require 'elm/files'
 require 'elm/compiler'
@@ -6,13 +7,16 @@ require 'elm/options'
 
 # Elm ruby wrapper
 module Elm
-  def make
+  include Contracts::Core
+  include Contracts::Builtin
+
+  Contract None => Elm::Runnable
+  def self.make
     Elm::Runnable.new 'elm-make'
   end
 
-  def compiler
+  Contract None => Elm::Compiler
+  def self.compiler
     Elm::Compiler.with make
   end
-
-  module_function :make, :compiler
 end

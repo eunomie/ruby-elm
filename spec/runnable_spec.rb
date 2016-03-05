@@ -16,14 +16,14 @@ describe Elm::Runnable do
   end
 
   context '#run' do
-    it 'should return true if command is ok' do
-      cmd = Elm::Runnable.new 'ruby'
-      expect(cmd.run(['-v'])).to be true
+    it 'should return RunSuccess if command is ok' do
+      cmd = Elm::Runnable.new 'true'
+      expect(cmd.run).to be_a Elm::RunSuccess
     end
 
-    it 'should return false if command is ko' do
+    it 'should return RunError if command is ko' do
       cmd = Elm::Runnable.new 'false'
-      expect(cmd.run).to be false
+      expect(cmd.run).to be_a Elm::RunError
     end
   end
 end

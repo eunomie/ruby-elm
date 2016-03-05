@@ -4,6 +4,10 @@ require 'elm/runnable'
 require 'elm/options'
 
 module Elm
+  # Error raised if run fail
+  class CompilerError < RuntimeError
+  end
+
   # Elm files to be compiled
   class Files
     include Contracts::Core
@@ -31,21 +35,22 @@ module Elm
     Contract None => String
     def to_file
       compile
+      @options.output
     end
 
     private
 
-    Contract None => String
+    Contract None => RunSuccess
     def compile
       compile @options
     end
 
     # rubocop:disable Lint/DuplicateMethods
-    Contract Elm::Options => String
+    Contract Elm::Options => RunSuccess
     def compile(options)
       status = @make.run(@files + options.to_a)
-      raise CompilerError unless status
-      options.output
+      raise(CompilerError, status.stderr) if status.is_a? RunError
+      status
     end
     # rubocop:enable Lint/DuplicateMethods
   end
