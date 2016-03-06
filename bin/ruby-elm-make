@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'elm'
+require 'elm/bin'
+
+exit Elm::Bin.exec ARGV

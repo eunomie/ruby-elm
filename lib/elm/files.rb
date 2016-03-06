@@ -8,6 +8,32 @@ module Elm
   class CompilerError < RuntimeError
   end
 
+  # Compilation output including status
+  class CompileOutput
+    include Contracts::Core
+    include Contracts::Builtin
+
+    attr_reader :output, :run_status
+
+    Contract String, RunSuccess => CompileOutput
+    def initialize(output, run_status)
+      @output = output
+      @run_status = run_status
+
+      self
+    end
+
+    Contract None => String
+    def stdout
+      @run_status.stdout
+    end
+
+    Contract None => String
+    def stderr
+      @run_status.stderr
+    end
+  end
+
   # Elm files to be compiled
   class Files
     include Contracts::Core
@@ -22,20 +48,21 @@ module Elm
       self
     end
 
-    Contract None => String
+    Contract None => CompileOutput
     def to_s
       content = ''
+      run_status = nil
       Tempfile.open(['elm', '.js']) do |tempfile|
-        compile @options.with_output(tempfile.path)
+        run_status = compile @options.with_output(tempfile.path)
         content = File.read tempfile
       end
-      content
+      CompileOutput.new content, run_status
     end
 
-    Contract None => String
+    Contract None => CompileOutput
     def to_file
-      compile
-      @options.output
+      run_status = compile
+      CompileOutput.new @options.output, run_status
     end
 
     private

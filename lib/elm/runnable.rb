@@ -7,35 +7,28 @@ module Elm
   class ExecutableNotFoundError < RuntimeError
   end
 
-  # Successful status
-  class RunSuccess
-    include Contracts::Core
-    include Contracts::Builtin
-
-    attr_reader :stdout
-
-    Contract String => RunSuccess
-    def initialize(stdout)
-      @stdout = stdout
-
-      self
-    end
-  end
-
-  # Fail status
-  class RunError
+  # Status if execution of Runnable
+  class RunStatus
     include Contracts::Core
     include Contracts::Builtin
 
     attr_reader :stdout, :stderr
 
-    Contract String, KeywordArgs[with_error: Optional[String]] => RunError
+    Contract String, KeywordArgs[with_error: Optional[String]] => RunStatus
     def initialize(stdout, with_error: '')
       @stdout = stdout
       @stderr = with_error
 
       self
     end
+  end
+
+  # Status when execution is successful
+  class RunSuccess < RunStatus
+  end
+
+  # Status when execution fail
+  class RunError < RunStatus
   end
 
   # Run command
@@ -67,12 +60,12 @@ module Elm
     def run(options)
       cmd = [@command] + options
       Open3.popen3(*cmd) do |_i, o, e, t|
-        @out = o.gets || ''
-        @err = e.gets || ''
+        out = o.read || ''
+        err = e.read || ''
         if t.value.success?
-          RunSuccess.new @out
+          RunSuccess.new out, with_error: err
         else
-          RunError.new @out, with_error: @err
+          RunError.new out, with_error: err
         end
       end
     end
