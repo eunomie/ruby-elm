@@ -14,10 +14,10 @@ module Elm
       begin
         compile_output = Elm.compiler.files(argv, with_options: options).to_file
       rescue ExecutableNotFoundError => executable_not_found
-        STDERR.puts executable_not_found.message
+        $stderr.puts executable_not_found.message
         exit false
       rescue CompilerError => compiler_error
-        STDERR.puts compiler_error.message
+        $stderr.puts compiler_error.message
         exit false
       end
       puts compile_output.stderr
