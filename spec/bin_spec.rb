@@ -1,5 +1,4 @@
 require 'elm'
-require 'elm/bin'
 
 describe Elm::Bin do
   context '##exec' do
@@ -10,7 +9,7 @@ describe Elm::Bin do
 
       it 'should display arguments with --yes in output' do
         argv = %('first', 'second')
-        expected_output = "\n" + argv.join(' ') + " --yes\n"
+        expected_output = argv.join(' ') + " --yes\n"
 
         expect { Elm::Bin.exec(argv) }.to output(expected_output).to_stdout
       end

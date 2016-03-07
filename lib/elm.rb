@@ -4,6 +4,7 @@ require 'elm/files'
 require 'elm/compiler'
 require 'elm/opt_parser'
 require 'elm/options'
+require 'elm/bin'
 
 # Elm ruby wrapper
 module Elm

@@ -20,7 +20,7 @@ module Elm
         $stderr.puts compiler_error.message
         exit false
       end
-      puts compile_output.stderr
+      $stderr.puts compile_output.stderr
       puts compile_output.stdout
       true
     end
