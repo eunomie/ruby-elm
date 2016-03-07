@@ -1,9 +1,9 @@
 Gem::Specification.new do |s|
   s.name = 'ruby-elm'
-  s.version = '0.0.1'
-  s.date = '2016-02-29'
-  s.summary = 'Elm'
-  s.description = 'Elm ruby wrapper.'
+  s.version = '0.5.0'
+  s.date = '2016-03-07'
+  s.summary = 'Elm ruby wrapper'
+  s.description = 'Executable and ruby library to compiler elm files.'
   s.authors = ['Yves Brissaud']
   s.email = 'yves.brissaud@gmail.com'
   all_files = `git ls-files -z`.split("\x0")
