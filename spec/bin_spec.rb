@@ -8,7 +8,7 @@ describe Elm::Bin do
       end
 
       it 'should display arguments with --yes in output' do
-        argv = %('first', 'second')
+        argv = %w(first second)
         expected_output = argv.join(' ') + " --yes\n"
 
         expect { Elm::Bin.exec(argv) }.to output(expected_output).to_stdout
