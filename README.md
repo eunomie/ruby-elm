@@ -33,12 +33,23 @@ require 'elm'
 # Compile files to a string
 Elm.compiler.files(['test.elm']).to_s
 
-# Compiler files to a file
+# Compile files to a file
 # index.html
 Elm.compiler.files(['test.elm']).to_file
 # other output
 Elm.compiler.files(['test.elm'],
   with_options: { output: 'out.js' }).to_file
+
+# Compile content to a string or file
+content = <<EOF
+import Html exposing (text)
+
+main =
+  text "Hello, World!"
+
+EOF
+Elm.compiler.content(content).to_s
+Elm.compiler.content(content).to_file
 ```
 
 Some options are available:
