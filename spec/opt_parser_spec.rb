@@ -90,5 +90,13 @@ describe Elm::OptParser do
         end
       end.to output(/Usage: ruby-elm/).to_stdout
     end
+
+    it 'should raise error if invalid argument' do
+      invalid_argument = '--invalid_argument'
+      expect do
+        Elm::OptParser.parse [invalid_argument]
+      end.to raise_error Elm::InvalidOptionError,
+                         "invalid option: #{invalid_argument}"
+    end
   end
 end

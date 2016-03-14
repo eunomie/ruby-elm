@@ -3,6 +3,10 @@ require 'optparse'
 require 'elm/options'
 
 module Elm
+  # Error raised when trying to parse invalid option
+  class InvalidOptionError < RuntimeError
+  end
+
   # Parse command line options
   class OptParser
     include Contracts::Core
@@ -57,7 +61,11 @@ module Elm
         opts.separator 'Examples:'
       end
 
-      opt_parser.parse! args
+      begin
+        opt_parser.parse! args
+      rescue OptionParser::InvalidOption => err
+        raise InvalidOptionError, err.message
+      end
       options
     end
   end
