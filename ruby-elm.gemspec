@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'ruby-elm'
-  s.version = '0.6.0'
-  s.date = '2016-03-12'
+  s.version = '0.7.0'
+  s.date = '2016-03-16'
   s.summary = 'Elm ruby wrapper'
   s.description = 'Executable and ruby library to compiler elm files.'
   s.authors = ['Yves Brissaud']
